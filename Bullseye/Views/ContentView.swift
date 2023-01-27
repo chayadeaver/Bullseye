@@ -18,24 +18,11 @@ struct ContentView: View {
 			Color("BackgroundColor")
 				.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
 			VStack {
-				Text("🎯🎯🎯\nPut the Bullseye as close as you can to".uppercased())
-					.bold()
-					.kerning(2.0)
-					.multilineTextAlignment(.center)
-					.lineSpacing(4.0)
-					.font(.footnote)
-					.padding(.leading, 30.0)
-					.padding(.trailing, 30.0)
-				Text(String(game.target))
-					.kerning(-1.0)
-					.font(.largeTitle)
-					.fontWeight(.black)
+				InstructionsView(game: $game)
 				HStack {
-					Text("1")
-						.bold()
+					SliderLabelText(text: "1")
 					Slider(value: $sliderValue, in: 1.0...100.0)
-					Text("100")
-						.bold()
+					SliderLabelText(text: "100")
 				}
 				.padding()
 				Button(action: {
@@ -60,11 +47,28 @@ struct ContentView: View {
 					} message: {
 						let roundedValue = Int(sliderValue.rounded())
 						Text("The slider's value is \(roundedValue).\n" + "You scored \(game.points(sliderValue: roundedValue)) points this round.")
+							.foregroundColor(Color("TextColor"))
 					}
 			}
 		}
 	}
 }
+
+struct InstructionsView: View {
+	
+	@Binding var game: Game
+	
+	
+	var body: some View {
+		VStack {
+			InstructionText(text: "🎯🎯🎯\nPut the Bullseye as close as you can to")
+				.padding(.leading, 30.0)
+				.padding(.trailing, 30.0)
+			BigNumberText(text: String(game.target))
+		}
+	}
+}
+
 
 struct ContentView_Previews: PreviewProvider {
 	static var previews: some View {
